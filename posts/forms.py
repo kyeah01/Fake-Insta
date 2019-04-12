@@ -1,7 +1,15 @@
-from django.forms import ModelForm
-from .models import Post
+from django import forms
+from .models import Post, Image
 
-class PostForm(ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['content','image',]
+        fields = ['content',]
+        
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = ['file']
+        widgets = {
+            'file' : forms.FileInput(attrs={'multiple':True}),
+        }

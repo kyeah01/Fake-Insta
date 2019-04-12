@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',
+    'imagekit',
     'bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',
