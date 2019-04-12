@@ -13,28 +13,28 @@ def list(request):
     
 def create(request):
     if request.method =="POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()
+        post_form = PostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            post_form.save()
             return redirect('posts:list')
     else:
-        form = PostForm()
+        post_form = PostForm()
     context = {
-        'form' : form
+        'post_form' : post_form
     }
     return render(request, 'posts/form.html', context)
     
 def update(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == "POST":
-        form  = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
+        post_form  = PostForm(request.POST, instance=post)
+        if post_form.is_valid():
+            post_form.save()
             return redirect('posts:list')
     else:
-        form = PostForm(instance=post)
+        post_form = PostForm(instance=post)
     context = {
-        'form' : form
+        'post_form' : post_form
     }
     return render(request, 'posts/form.html', context)
     
