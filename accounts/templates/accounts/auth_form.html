@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap4 %}
+{% if request.resolver_match.url_name == 'signup' %}
+    <h1>Sign Up</h1><br>
+{% else %}
+    <h1>Edit</h1><br>
+{% endif %}
+<form method='POST'>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% if request.resolver_match.url_name == 'signup' %}
+        {% bootstrap_button "Sign Up" button_type="submit" button_class="btn-primary" %}
+    {% else %}
+        {% bootstrap_button "Edit" button_type="submit" button_class="btn-primary" %}
+    {% endif %}
+</form>
+{% endblock %}

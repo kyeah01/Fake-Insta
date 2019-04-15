@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_list_or_404, get_object_or_40
 from django.views.decorators.http import require_POST
 from .models import Post, Image
 from .forms import PostForm, ImageForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def list(request):
@@ -11,6 +12,7 @@ def list(request):
     }
     return render(request, 'posts/list.html', context)
     
+@login_required
 def create(request):
     if request.method =="POST":
         post_form = PostForm(request.POST)
@@ -33,6 +35,7 @@ def create(request):
     }
     return render(request, 'posts/form.html', context)
     
+@login_required
 def update(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == "POST":
