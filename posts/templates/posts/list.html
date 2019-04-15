@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+{% block style %}
+<style>
+    .choose_that {
+        display : inline;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <h1>LIST</h1>
 <div class="d-inline-flex flex-wrap justify-content-center">
@@ -8,5 +15,4 @@
     {% endfor %}
     
 </div>
-
 {% endblock %}

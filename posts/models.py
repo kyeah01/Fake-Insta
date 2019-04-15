@@ -18,3 +18,8 @@ class Image(models.Model):
             processors=[ResizeToFill(600, 600)],
             format='JPEG',
             options={'quality': 100},)
+            
+class Comment(models.Model):
+    content = models.CharField(max_length=100)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
