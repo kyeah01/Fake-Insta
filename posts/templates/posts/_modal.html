@@ -1,0 +1,24 @@
+<!-- Modal -->
+<div class="modal fade" id="Modal{{ post.pk }}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel{{ post.pk }}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel{{ post.pk }}">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ post.user }}
+        {{ post.content }}
+      </div>
+      <div class="modal-footer">
+        <a href="{% url 'posts:update' post.pk %}"><button class="btn btn-warning" type="submit"/>글 수정</button></a>
+        <form action="{% url 'posts:delete' post.pk %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit" />삭제</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

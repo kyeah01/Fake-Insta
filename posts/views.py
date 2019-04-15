@@ -17,7 +17,9 @@ def create(request):
     if request.method =="POST":
         post_form = PostForm(request.POST)
         if post_form.is_valid():
-            post = post_form.save()
+            post = post_form.save(commit=False)
+            post.user = request.user
+            post.save()
             for image in request.FILES.getlist('file'):
                 request.FILES['file'] = image
                 image_form = ImageForm(files=request.FILES)
@@ -38,6 +40,8 @@ def create(request):
 @login_required
 def update(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
+    if post.user != request.user:
+        return redirect('posts:list')
     if request.method == "POST":
         post_form  = PostForm(request.POST, instance=post)
         if post_form.is_valid():
@@ -52,6 +56,8 @@ def update(request, post_pk):
     
 @require_POST
 def delete(request, post_pk):
+    if post.user != request.user:
+        return redirect('posts:list')
     post = get_object_or_404(Post, pk=post_pk)
     post.delete()
     return redirect('posts:list')
