@@ -54,7 +54,7 @@
         {% endfor %}
     </div>
     <div class="card-footer">
-    {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
         <form action="{% url 'posts:comment_create' post.pk %}" method="POST" class='d-flex align-items-center'>
             {% csrf_token %}
             {{ comment_form }}
@@ -65,6 +65,18 @@
         {% else %}
         <a href='{% url "accounts:login" %}' class="card-link">댓글을 달려면 로그인 하세요.</a>
         {% endif %}
+        
+        <a href="{% url 'posts:like' post.pk %}">
+        {% if user in post.like_users.all %}
+            <i class="fas fa-heart" style="color:crimson"></i>
+        {% else %}
+            <i class="fas fa-heart" style="color:black"></i>
+        {% endif %}
+        </a> {{ post.like_users.all | length }}
+        
+        {% for user in post.like_users.all %}
+            <p>{{ user }}</p>
+        {% endfor %}
     </div>
 </div>
 
