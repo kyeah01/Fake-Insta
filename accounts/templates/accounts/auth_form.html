@@ -20,7 +20,7 @@
     {% else %}
         <div class="d-flex">
         {% bootstrap_button "Edit" button_type="submit" button_class="btn-primary" %}
-        <a href="{% url 'people' user.username %}" class='btn btn-info mx-1'>Back</a>
+        <a href="{% url 'people' user %}" class='btn btn-info mx-1'>Back</a>
             
         <form action='{% url "accounts:delete" %}' method='POST' class='btn' onsubmit="return confirm('R U SURE?')">
             {% csrf_token %}

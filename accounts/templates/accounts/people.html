@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-center">{{ people.username }}'s Profile</h1>
+<!--프로필 정보-->
+<div class="jumbotron jumbotron-fluid text-center mb-2">
+  <div class="container">
+    <p style='display:inline;'>nickname_</p> <h1 class="display-4 mx-2" style='display:inline;'>{{ people.profile.nickname }}</h1>
+    <hr>
+    <p class="lead">{{ people.profile.introduction }}</p>
+  </div>
+</div>
+<!--상태변경 링크-->
 <div class="text-center">
 {% if user == people %}
-    <a href="{% url 'accounts:update' %}" class='badge badge-info'>정보 수정</a>
+    <a href="{% url 'accounts:update' %}" class='badge badge-info'>회원정보 수정</a>
+    <a href="{% url 'accounts:profile_update' %}" class='badge badge-success'>프로필 수정</a>
     <a href="{% url 'accounts:password' %}" class='badge badge-warning'>비밀번호 수정</a>
+    <hr>
 {% endif %}
 </div>
 <h3 class="text-center">{{ people.username }}이 작성한 게시글</h3>
