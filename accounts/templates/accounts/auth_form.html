@@ -3,6 +3,10 @@
 {% load bootstrap4 %}
 {% if request.resolver_match.url_name == 'signup' %}
     <h1>Sign Up</h1><br>
+{% elif request.resolver_match.url_name == 'update' %}
+    <h1>Edit</h1><br>
+{% elif request.resolver_match.url_name == 'password' %}
+    <h1>Password Edit</h1><br>
 {% else %}
     <h1>Login</h1><br>
 {% endif %}
@@ -11,8 +15,20 @@
     {% bootstrap_form form %}
     {% if request.resolver_match.url_name == 'signup' %}
         {% bootstrap_button "Sign Up" button_type="submit" button_class="btn-primary" %}
-    {% else %}
+    {% elif request.resolver_match.url_name == 'Login' %}
         {% bootstrap_button "Login" button_type="submit" button_class="btn-primary" %}
+    {% else %}
+        <div class="d-flex">
+        {% bootstrap_button "Edit" button_type="submit" button_class="btn-primary" %}
+        <a href="{% url 'people' user.username %}" class='btn btn-info mx-1'>Back</a>
+            
+        <form action='{% url "accounts:delete" %}' method='POST' class='btn' onsubmit="return confirm('R U SURE?')">
+            {% csrf_token %}
+            <input type="submit" value="회원탈퇴" class='btn btn-danger ml-auto'/>
+        </form>
+        </div>
+        <hr>
+
     {% endif %}
 </form>
 {% endblock %}

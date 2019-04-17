@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-center">{{ people.username }}'s Profile</h1>
+<div class="text-center">
+{% if user == people %}
+    <a href="{% url 'accounts:update' %}" class='badge badge-info'>정보 수정</a>
+    <a href="{% url 'accounts:password' %}" class='badge badge-warning'>비밀번호 수정</a>
+{% endif %}
+</div>
 <h3 class="text-center">{{ people.username }}이 작성한 게시글</h3>
 <div class="row">
     {% for post in people.post_set.all %}

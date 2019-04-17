@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
-# from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST
+from .forms import CustomUserChangeForm
 
 # Create your views here.
 def signup(request):
@@ -38,7 +39,6 @@ def login(request):
     }
     return render(request, 'accounts/auth_form.html', context)
     
-# @require_POST
 @login_required
 def logout(request):
     auth_logout(request)
@@ -50,3 +50,38 @@ def people(request, username):
         'people' : people,
     }
     return render(request, 'accounts/people.html', context)
+    
+@login_required   
+def update(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('people', request.user)
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    context = {
+        'form' : form,
+    }
+    return render(request, 'accounts/auth_form.html', context)
+    
+@login_required   
+@require_POST
+def delete(request):
+    request.user.delete()
+    return redirect('posts:list')
+
+@login_required   
+def password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('posts:list')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    context = {
+        'form' : form
+    }
+    return render(request, 'accounts/auth_form.html', context)
