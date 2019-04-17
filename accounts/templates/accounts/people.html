@@ -5,8 +5,16 @@
 <div class="jumbotron jumbotron-fluid text-center mb-2">
   <div class="container">
     <p style='display:inline;'>nickname_</p> <h1 class="display-4 mx-2" style='display:inline;'>{{ people.profile.nickname }}</h1>
-    <hr>
+    <hr class='my-4'>
     <p class="lead">{{ people.profile.introduction }}</p>
+    <p class="lead">Following : {{ people.followings.count }} | Follower : {{ people.followers.count }}</p>
+    {% if user != people %}
+        {% if user in people.followers.all %}
+            <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-outline-primary">UnFollow</a>
+        {% else %}
+            <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-primary">Follow</a>
+        {% endif %}
+    {% endif %}
   </div>
 </div>
 <!--상태변경 링크-->

@@ -4,7 +4,7 @@
     
 <div class="card">
     <div class="card-header">
-        <h5 class='card-text'> {{ post.user }} </h5>
+        <h5 class='card-text'><a href="{% url 'people' post.user.username %}" class='card-link'> {{ post.user }} </a></h5>
     </div>
     
     {% if post.image_set %}
