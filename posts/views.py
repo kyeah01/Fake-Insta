@@ -3,7 +3,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from itertools import chain
-from .models import Post, Image, Comment
+from .models import Post, Image, Comment, Hashtag
 from .forms import PostForm, ImageForm, CommentForm
 
 # Create your views here.
@@ -34,6 +34,12 @@ def create(request):
             post = post_form.save(commit=False)
             post.user = request.user
             post.save()
+            # hashtag
+            for content in post.content.split():
+                if content[0] == '#':
+                    hashtag = Hashtag.objects.get_or_create(content=content)
+                    post.hashtags.add(hashtag[0])
+            
             for image in request.FILES.getlist('file'):
                 request.FILES['file'] = image
                 image_form = ImageForm(files=request.FILES)
@@ -59,7 +65,16 @@ def update(request, post_pk):
     if request.method == "POST":
         post_form  = PostForm(request.POST, instance=post)
         if post_form.is_valid():
-            post_form.save()
+            post = post_form.save()
+            # hashtag update
+            # post.hashtags.exclude()
+            post.hashtags.clear()
+            for content in post.content.split():
+                if content[0] == '#':
+                    hashtag = Hashtag.objects.get_or_create(content=content)
+                    post.hashtags.add(hashtag[0])
+            
+            
             return redirect('posts:list')
     else:
         post_form = PostForm(instance=post)
@@ -122,3 +137,12 @@ def explore(request):
         'comment_form' : comment_form
     }
     return render(request, 'posts/list.html', context)
+    
+def hashtag(request, hash_pk):
+    hashtag = get_object_or_404(Hashtag, pk=hash_pk)
+    posts = hashtag.post_set.order_by('-pk')
+    context = {
+        'hashtag':hashtag,
+        'posts' : posts,
+    }
+    return render(request, 'posts/hashtag.html', context)

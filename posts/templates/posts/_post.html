@@ -1,5 +1,5 @@
 {% load bootstrap4 %}
-
+{% load posts_templatetag %}
 <div class="col-10 my-3">
     
 <div class="card">
@@ -31,7 +31,7 @@
         <img src="#" class="card-img-top" alt="No Image">
     {% endif %}
     <div class="card-body">
-        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text">{{ post | hashtag_link | safe }}</p>
         {% if user == post.user %}
             <a href="{% url 'posts:update' post.pk %}"><button class="btn btn-warning" type="submit"/>글 수정</button></a>
             <form action="{% url 'posts:delete' post.pk %}" method="POST" style="display:inline;">
